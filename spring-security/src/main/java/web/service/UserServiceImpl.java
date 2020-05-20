@@ -15,12 +15,16 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    @Autowired
     private UserDao userDao;
 
+    @Autowired
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    @Transactional
     @Override
     public boolean addUser(User user) {
         if (user.getName() != null && user.getSurName() != null) {
@@ -30,6 +34,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return false;
     }
 
+    @Transactional
     @Override
     public boolean updateUser(Long id, String name, String surName, String password) {
         if (id != null && name != null && surName != null && password != null) {
@@ -44,6 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return false;
     }
 
+    @Transactional
     @Override
     public boolean deleteUser(User user) {
         if (user.getId() != null) {
@@ -53,6 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return false;
     }
 
+    @Transactional
     @Override
     public List<User> getAllUser() {
         return userDao.getAllUser();
@@ -64,6 +71,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userMayBy.orElseThrow(IllegalAccessError::new);
     }
 
+    @Transactional
     @Override
     public void addAdminAndUser() {
         if (!userDao.isNotReg("admin")) {

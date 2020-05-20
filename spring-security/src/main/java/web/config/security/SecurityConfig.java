@@ -1,4 +1,4 @@
-package web.config;
+package web.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +17,12 @@ import web.config.handler.LoginSuccessHandler;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -58,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").anonymous()
                 // защищенные URL
                 .antMatchers("/admin/*").access("hasAuthority('admin')")
-                .antMatchers("/user").access("hasAnyAuthority('user')");
+                .antMatchers("/user").access("hasAuthority('user')");
     }
 
     @Bean

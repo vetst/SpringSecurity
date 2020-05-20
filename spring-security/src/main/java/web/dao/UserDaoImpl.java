@@ -15,6 +15,7 @@ public class UserDaoImpl implements UserDao {
     private EntityManager entityManager;
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<User> getAllUser() {
         Query query = entityManager.createQuery("SELECT e FROM User e");
         return query.getResultList();
@@ -39,7 +40,7 @@ public class UserDaoImpl implements UserDao {
     public boolean isNotReg(String name) {
         return getAllUser()
                 .stream()
-                .anyMatch((e) -> e.getUsername().hashCode() == name.hashCode());
+                .anyMatch((e) -> e.getUsername().equals(name));
     }
 
     @Override
